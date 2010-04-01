@@ -2,6 +2,8 @@ HISTORY
 =======
 
 v0.5b2 (xxxx-xx-xx)
+ * Call ::http::cleanup event when an error occurs in
+    ::rss-synd::feed_callback.
  * Fixed an error where self closing child elements with the same tag name
     as their parents were not being parsed as intended.
  * Fixed issue #1 where a regular expression was incorrectly matching tag
