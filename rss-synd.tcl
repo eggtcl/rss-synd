@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# Copyright (c) 2007, Andrew Scott
+# Copyright (c) xxxx, Andrew Scott
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -407,6 +407,7 @@ proc ::rss-synd::feed_callback {feedlist args} {
 
 	if {$state(status) != "ok"} {
 		putlog "\002RSS HTTP Error\002: $state(url) (State: $state(status))"
+		::http::cleanup $token
 		return 1
 	}
 
@@ -421,9 +422,11 @@ proc ::rss-synd::feed_callback {feedlist args} {
 			putlog "\002RSS HTTP Error\002: $state(url) (State: timeout, max refer limit reached)"
 		}
 
+		::http::cleanup $token
 		return 1
 	} elseif {[::http::ncode $token] != 200} {
 		putlog "\002RSS HTTP Error\002: $state(url) ($state(http))"
+		::http::cleanup $token
 		return 1
 	}
 
@@ -437,17 +440,20 @@ proc ::rss-synd::feed_callback {feedlist args} {
 	    ([string equal $meta(Content-Encoding) "gzip"])} {
 		if {[catch {[namespace current]::feed_gzip $data} data] != 0} {
 			putlog "\002RSS Error\002: Unable to decompress \"$state(url)\": $data"
+			::http::cleanup $token
 			return 1
 		}
 	}
 
 	if {[catch {[namespace current]::xml_list_create $data} data] != 0} {
 		putlog "\002RSS Error\002: Unable to parse feed properly, parser returned error. \"$state(url)\""
+		::http::cleanup $token
 		return 1
 	}
 
 	if {[string length $data] == 0} {
 		putlog "\002RSS Error\002: Unable to parse feed properly, no data returned. \"$state(url)\""
+		::http::cleanup $token
 		return 1
 	}
 
@@ -458,6 +464,7 @@ proc ::rss-synd::feed_callback {feedlist args} {
 
 	if {![[namespace current]::feed_info $data]} {
 		putlog "\002RSS Error\002: Invalid feed format ($state(url))!"
+		::http::cleanup $token
 		return 1
 	}
 
