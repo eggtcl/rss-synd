@@ -8,6 +8,7 @@ v0.5b2 (xxxx-xx-xx)
     as their parents were not being parsed as intended.
  * Fixed issue #1 where a regular expression was incorrectly matching tag
     names that started with the whole name of the tag we were looking for.
+ * Added a more detailed error message if the ::http::status is "error".
 
 v0.5b1 (2007-12-17)
 -----------------

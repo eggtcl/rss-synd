@@ -405,8 +405,9 @@ proc ::rss-synd::feed_callback {feedlist args} {
 
 	upvar 0 $token state
 
-	if {$state(status) != "ok"} {
-		putlog "\002RSS HTTP Error\002: $state(url) (State: $state(status))"
+	if {[set status $state(status)] != "ok"} {
+		if {$status == "error"} { set status $state(error) }
+		putlog "\002RSS HTTP Error\002: $state(url) (State: $status)"
 		::http::cleanup $token
 		return 1
 	}
