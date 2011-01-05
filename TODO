@@ -1,5 +1,6 @@
-
+################################################################################
   TODO
+################################################################################
 
 0.7 - Allow custom headers to be set for feeds (some feeds need cookie auth)
 0.7 - Devise a better way of parsing feeds based on the total number of feeds used.
@@ -9,3 +10,5 @@
 0.7 - Add a parser timeout to break out of a loop if the feed is improperly 
       formatted and is looping the timer. Test with html4 pages. The parser
       could also be improved to handle this.
+
+EOF

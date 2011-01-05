@@ -2,6 +2,10 @@
 # Start of Settings
 #
 
+#
+# See the README file for more information
+#
+
 namespace eval ::rss-synd {
 	variable rss
 	variable default
@@ -104,4 +108,4 @@ namespace eval ::rss-synd {
 #
 # End of Settings
 #
-###############################################################################
+################################################################################

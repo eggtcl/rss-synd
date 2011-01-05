@@ -1,5 +1,6 @@
-
+################################################################################
   HISTORY
+################################################################################
 
 0.5 (2011-01-05)
 * HM2K joined the project
@@ -8,6 +9,7 @@
 * Split settings from rss-synd.tcl into rss-synd-settings.tcl
 * Split TODO list from HISTORY into new TODO file
 * Reformatted HISTORY file
+* Reformatted README file
 
 0.5b2 (2010-04-14)
 * Call ::http::cleanup event when an error occurs in
@@ -80,3 +82,5 @@
 
 0.1 (2005-08-23)
 * Initial release
+
+EOF
