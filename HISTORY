@@ -1,96 +1,82 @@
-HISTORY
-=======
 
-v0.5b2 (xxxx-xx-xx)
- * Call ::http::cleanup event when an error occurs in
-    ::rss-synd::feed_callback.
- * Fixed an error where self closing child elements with the same tag name
-    as their parents were not being parsed as intended.
- * Fixed issue #1 where a regular expression was incorrectly matching tag
-    names that started with the whole name of the tag we were looking for.
- * Added a more detailed error message if the ::http::status is "error".
+  HISTORY
 
-v0.5b1 (2007-12-17)
------------------
- * Optimised and cleaned up some code. The parser is now 6-8% faster now on
-    my box.
- * Fixed possible infinite loop in the xml parser.
- * Somewhat fixed "charset" setting, should now work in most cases. If it
-    doesn't work correctly try it without "charset".
- * Changed PUB and MSG trigger procs to be the same.
+0.5 (2011-01-05)
+* HM2K joined the project
+* Split license from rss-synd.tcl into LICENSE file
+* Introduced new Tcl file headers to rss-synd.tcl
+* Split settings from rss-synd.tcl into rss-synd-settings.tcl
+* Split TODO list from HISTORY into new TODO file
+* Reformatted HISTORY file
 
+0.5b2 (2010-04-14)
+* Call ::http::cleanup event when an error occurs in
+  ::rss-synd::feed_callback.
+* Fixed an error where self closing child elements with the same tag name
+  as their parents were not being parsed as intended.
+* Fixed issue #1 where a regular expression was incorrectly matching tag
+  names that started with the whole name of the tag we were looking for.
+* Added a more detailed error message if the ::http::status is "error".
 
-v0.4 (2007-02-08)
------------------
- * Fixed for feeds using ' for attributes instead of ".
- * Fixed for feeds using the <!DOCTYPE> tag.
- * Fixed $state(url) bug (thanks alky).
+0.5b1 (2007-12-17)
+* Optimised and cleaned up some code. The parser is now 6-8% faster now on
+  my box.
+* Fixed possible infinite loop in the xml parser.
+* Somewhat fixed "charset" setting, should now work in most cases. If it
+  doesn't work correctly try it without "charset".
+* Changed PUB and MSG trigger procs to be the same.
 
+0.4 (2007-02-08)
+* Fixed for feeds using ' for attributes instead of ".
+* Fixed for feeds using the <!DOCTYPE> tag.
+* Fixed $state(url) bug (thanks alky).
 
-v0.3 (2006-11-27)
------------------
- * Added a new XML parser. should be significantly faster and more accurate.
+0.3 (2006-11-27)
+* Added a new XML parser. should be significantly faster and more accurate.
   - The XML data is now structured internally, for quick & easy access.
   - CDATA is now handled correctly.
- * Added support for HTTPS. Requires: TLS package, http://www.sensus.org/tcl/
- * Added support for basic HTTP authorisation. Requires: base64 package from
-    tcllib, http://tcllib.sourceforge.net/
- * Added support for compressed (gzipped) feeds. Requires: Trf package,
-    http://tcltrf.sourceforge.net/
- * Added public & private triggers.
- * Added multi-lined output, just use \n.
- * Added decoding of hexadecimal HTML elements.
- * Fixed trigger announcing updates to all channels, rather than just the one
-    it was triggered from.
- * Fixed pub_trigger proc which wrongly matched text containing wildcards with
-    triggers.
- * Fixed double encoded elements, for example: &amp;amp; will now be properly
-    decoded.
- * Changed the default order of output when more than one new item is to be
-    announced, now the newest items are last. This is configurable with the
-    'output-order' setting.
- * Changed some error messages to be more meaningful.
- * Changed the cookie format (again). to get the attribute of a tag you must
-    do: @@tag!=attribute@@.
- * Changed some proc's, moved some code and cleaned up a few variable names.
- * Changed how it determines if the story is new. Rather than just checking
-    against the last entry it will scan all articles in the database to
-    see if it already exists. This should fix problems with spamming old
-    articles (eg: when articles were buried on digg).
- * Changes the decoding of decimal HTML element to be less strict.
+* Added support for HTTPS. Requires: TLS package, http://www.sensus.org/tcl/
+* Added support for basic HTTP authorisation. Requires: base64 package from
+  tcllib, http://tcllib.sourceforge.net/
+* Added support for compressed (gzipped) feeds. Requires: Trf package,
+  http://tcltrf.sourceforge.net/
+* Added public & private triggers.
+* Added multi-lined output, just use \n.
+* Added decoding of hexadecimal HTML elements.
+* Fixed trigger announcing updates to all channels, rather than just the one
+  it was triggered from.
+* Fixed pub_trigger proc which wrongly matched text containing wildcards with
+  triggers.
+* Fixed double encoded elements, for example: &amp;amp; will now be properly
+  decoded.
+* Changed the default order of output when more than one new item is to be
+  announced, now the newest items are last. This is configurable with the
+  'output-order' setting.
+* Changed some error messages to be more meaningful.
+* Changed the cookie format (again). to get the attribute of a tag you must
+  do: @@tag!=attribute@@.
+* Changed some proc's, moved some code and cleaned up a few variable names.
+* Changed how it determines if the story is new. Rather than just checking
+  against the last entry it will scan all articles in the database to
+  see if it already exists. This should fix problems with spamming old
+  articles (eg: when articles were buried on digg).
+* Changes the decoding of decimal HTML element to be less strict.
+* Much more...
 
- and lots more i forgot...
+0.2 (2005-09-21)
+* Fixed problem with feeds using 'special' characters and enabling the
+  'eval-tcl' option.
+* Fixed problem with hanging on self closing tags.
+* Fixed <CDATA> support.
+* Fixed error with invalid html entities within feed data.
+* Fixed problem with PRIVMSG having to many targets
+* Fixed some other little problems
+* Added stripping of unwanted HTML from feeds.
+* Added support for output of any entity or value within <item> and <channel>.
+  eg: for '<item><song size="1010101">Example</song></item>' you could use
+  @@item!=song!size@@ or @@item!song!name@@.
+* Changed cookie divider from : to !.
+* Changed default timeout to 60 seconds
 
-
-v0.2 (2005-09-21)
------------------
- * Fixed problem with feeds using 'special' characters and enabling the
-    'eval-tcl' option.
- * Fixed problem with hanging on self closing tags.
- * Fixed <CDATA> support.
- * Fixed error with invalid html entities within feed data.
- * Fixed problem with PRIVMSG having to many targets
- * Fixed some other little problems
- * Added stripping of unwanted HTML from feeds.
- * Added support for output of any entity or value within <item> and <channel>.
-    eg: for '<item><song size="1010101">Example</song></item>' you could use
-    @@item!=song!size@@ or @@item!song!name@@.
- * Changed cookie divider from : to !.
- * Changed default timeout to 60 seconds
-
-
-v0.1 (2005-08-23)
------------------
- * Initial release
-
-
-TODO
-----
- * Allow custom headers to be set for feeds (some feeds need cookie auth)
- * Devise a better way of parsing feeds based on the total number of feeds used.
- * Replace \n with \s BEFORE announcement.
- * Update feeds on !trigger.
- * Article filtering, If the title doesn't match, don't announce it.
- * Add a parser timeout to break out of a loop if the feed is improperly
-   formatted and is looping the timer. Test with html4 pages. The parser
-   could also be improved to handle this.
+0.1 (2005-08-23)
+* Initial release

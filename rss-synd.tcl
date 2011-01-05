@@ -1,153 +1,29 @@
-###############################################################################
+# rss-synd.tcl -- 0.5
 #
-# Copyright (c) xxxx, Andrew Scott
-# All rights reserved.
+#   RSS Syndication for eggdrop
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
+# Copyright (c) 2011 Andrew Scott, HM2K
 #
-#    * Redistributions of source code must retain the above copyright notice,
-#      this list of conditions and the following disclaimer.
-#    * Redistributions in binary form must reproduce the above copyright
-#      notice, this list of conditions and the following disclaimer in the
-#      documentation and/or other materials provided with the distribution.
-#    * Neither the name of the author nor the names of its contributors
-#      may be used to endorse or promote products derived from this software
-#      without specific prior written permission.
+# Name: RSS Syndication
+# Author: Andrew Scott <andrew.scott@wizzer-it.com>
+# Author: HM2K <irc@hm2k.org>
+# License: See LICENSE file
+# Link: http://code.google.com/p/rss-synd/
+# Tags: rss, syndication
+# Updated: 05-Jan-2011
 #
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-# POSSIBILITY OF SUCH DAMAGE.
+###Usage
+# See README file
+#
+###Revisions
+# See HISTORY file
 
 #
-# Eggdrop RSS Syndication
-# -----------------------
-#   Date: xxxx-xx-xx
-#   Version: v0.5b2
-#   Author(s): Andrew Scott <andrew.scott@wizzer-it.com>
-#   Website: http://code.google.com/p/rss-synd/
+# Include Settings
 #
-
-#
-# Please read the README file for help and the HISTORY file for a list of
-#  what has been changed.
-#
-
-#
-# Start of Settings
-#
-
-namespace eval ::rss-synd {
-	variable rss
-	variable default
-
-	set rss(slashdot) {
-		"url"			"http://rss.slashdot.org/Slashdot/slashdot"
-		"channels"		"#channel1"
-		"database"		"./scripts/feeds/slashdot.db"
-		"output"		"\\\[\002Slashdot\002\\\] @@item!title@@ (@@item!slash:section@@) - \[string map { \"&from=rss\" \"\" } \"@@item!feedburner:origLink@@\"\]"
-		"trigger"		"!@@feedid@@"
-		"evaluate-tcl"	1
-	}
-
-	#set rss(test1) {
-	#	"url"			"http://www.pheedo.com/f/newscientist_space/atom10"
-	#	"channels"		"#test"
-	#	"database"		"./scripts/feeds/test1.db"
-	#	"trigger"		"!@@feedid@@"
-	#}
-
-	#set rss(test2) {
-	#	"url"			"http://milw0rm.com/rss.php"
-	#	"channels"		"#test"
-	#	"database"		"./scripts/feeds/test2.db"
-	#	"trigger"		"!@@feedid@@"
-	#}
-
-	#set rss(test3) {
-	#	"url"			"http://www.kvirc.net/rss.php"
-	#	"channels"		"#test"
-	#	"database"		"./scripts/feeds/test3.db"
-	#	"output"		"\[\002@@channel!title@@\002\] @@item!title@@ - @@item!guid@@"
-	#	"trigger"		"!@@feedid@@"
-	#}
-
-	#set rss(test4) {
-	#	"url"			"http://www.imaginascience.com/xml/rss.xml"
-	#	"channels"		"#test"
-	#	"database"		"./scripts/feeds/test4.db"
-	#	"trigger"		"!@@feedid@@"
-	#}
-
-	# Doesn't work with "charset" "utf-8" because TCL converts characters
-	#  with umlauts in to multibyte characters (eg: ü = Ã¼). Works fine
-	#  without.
-	#set rss(test5) {
-	#	"url"			"http://www.heise.de/newsticker/heise-atom.xml"
-	#	"channels"		"#test"
-	#	"database"		"./scripts/feeds/test5.db"
-	#	"trigger"		"!@@feedid@@"
-	#}
-
-	#set rss(test6) {
-	#	"url"			"http://news.google.ru/?output=rss"
-	#	"channels"		"#test"
-	#	"charset"		"utf-8"
-	#	"database"		"./scripts/feeds/test6.db"
-	#	"trigger"		"!@@feedid@@"
-	#}
-
-	#set rss(test7) {
-	#	"url"			"http://news.google.cn/?output=rss"
-	#	"channels"		"#test"
-	#	"charset"		"utf-8"
-	#	"database"		"./scripts/feeds/test7.db"
-	#	"trigger"		"!@@feedid@@"
-	#}
-
-	#set rss(test8) {
-	#	"url"			"http://news.google.it/?output=rss"
-	#	"channels"		"#test"
-	#	"charset"		"utf-8"
-	#	"database"		"./scripts/feeds/test8.db"
-	#	"trigger"		"!@@feedid@@"
-	#}
-
-	# The default settings, If any setting isn't set for an individual feed
-	#   it'll use the defaults listed here.
-	#
-	# WARNING: You can change the options here, but DO NOT REMOVE THEM, doing
-	#   so will create errors.
-	set default {
-		"announce-output"	3
-		"trigger-output"	3
-		"remove-empty"		1
-		"trigger-type"		0:2
-		"announce-type"		0
-		"max-depth"			5
-		"evaluate-tcl"		0
-		"update-interval"	30
-		"output-order"		0
-		"timeout"			60000
-		"channels"			"#channel1"
-		"trigger"			"!rss @@feedid@@"
-		"output"			"\[\002@@channel!title@@@@title@@\002\] @@item!title@@@@entry!title@@ - @@item!link@@@@entry!link!=href@@"
-		"user-agent"		"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2"
-	}
+if {[catch {source scripts/rss-synd-settings.tcl} err]} {
+  putlog "Error: Could not load 'rss-synd-settings.tcl file.'";
 }
-
-#
-# End of Settings
-#
-###############################################################################
 
 proc ::rss-synd::init {args} {
 	variable rss
@@ -155,8 +31,8 @@ proc ::rss-synd::init {args} {
 	variable version
 	variable packages
 
-	set version(number)	"0.5b2"
-	set version(date)	"xxxx-xx-xx"
+	set version(number)	"0.5"
+	set version(date)	"2011-01-05"
 
 	package require http
 	set packages(base64) [catch {package require base64}]; # http auth
