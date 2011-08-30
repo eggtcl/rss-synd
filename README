@@ -19,6 +19,7 @@ Dependencies (for additional features)
 ** Requires: base64 package from tcllib to be installed.
 ** URL: http://tcllib.sourceforge.net/
 ** FreeBSD: cd /usr/ports/devel/tcllib/ && make install clean
+** RedHat: yum install tcllib
 
 * HTTPS
 ** Requires: TLS package to be installed.
@@ -29,6 +30,7 @@ Dependencies (for additional features)
 ** Requires: Trf package to be installed.
 ** URL: http://tcltrf.sourceforge.net/
 ** FreeBSD: cd /usr/ports/devel/tcl-trf/ && make install clean
+** RedHat: yum install tcl-trf
 
 ================================================================================
 SETTINGS
