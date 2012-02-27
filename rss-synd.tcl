@@ -1,4 +1,4 @@
-# rss-synd.tcl -- 0.5
+# rss-synd.tcl -- 0.5.1
 #
 #   Highly configurable asynchronous RSS & Atom feed reader for Eggdrops 
 #     written in TCL. Supports multiple feeds, gzip compressed feeds,
@@ -34,8 +34,8 @@ proc ::rss-synd::init {args} {
 	variable version
 	variable packages
 
-	set version(number)	0.5
-	set version(date)	"2011-01-05"
+	set version(number)	0.5.1
+	set version(date)	"2012-02-27"
 
 	package require http
 	set packages(base64) [catch {package require base64}]; # http auth
@@ -99,7 +99,13 @@ proc ::rss-synd::init {args} {
 			set tmp(trigger-type) [split $tmp(trigger-type) ":"]
 
 			if {([info exists tmp(charset)]) && ([lsearch -exact [encoding names] [string tolower $tmp(charset)]] < 0)} {
-				putlog "\002RSS Error\002: Unable to load feed \"$feed\", unknown encoding \"$tmp(encoding)\"."
+				putlog "\002RSS Error\002: Unable to load feed \"$feed\", unknown encoding \"$tmp(charset)\"."
+				unset rss($feed)
+				continue
+			}
+			
+			if {([info exists tmp(feedencoding)]) && ([lsearch -exact [encoding names] [string tolower $tmp(feedencoding)]] < 0)} {
+				putlog "\002RSS Error\002: Unable to load feed \"$feed\", unknown feedencoding \"$tmp(feedencoding)\"."
 				unset rss($feed)
 				continue
 			}
@@ -311,6 +317,10 @@ proc ::rss-synd::feed_callback {feedlist args} {
 	}
 
 	set data [::http::data $token]
+	
+	if {[info exists feed(feedencoding)]} {
+		set data [encoding convertfrom [string tolower $feed(feedencoding)] $data]
+	}
 
 	if {[info exists feed(charset)]} {
 		if {[string tolower $feed(charset)]) == "utf-8" && [is_utf8_patched]} {

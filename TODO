@@ -11,4 +11,7 @@
       formatted and is looping the timer. Test with html4 pages. The parser
       could also be improved to handle this.
 
+	  
+0.? - Auto select the encoding based on the xml header. If the xml header can't be read, try again with utf-16.
+	  This requires a map of the xml encoding names and tcl encodings
 EOF
