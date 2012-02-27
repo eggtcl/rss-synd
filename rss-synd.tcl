@@ -34,7 +34,7 @@ proc ::rss-synd::init {args} {
 	variable version
 	variable packages
 
-	set version(number)	"0.5"
+	set version(number)	0.5
 	set version(date)	"2011-01-05"
 
 	package require http
@@ -313,7 +313,11 @@ proc ::rss-synd::feed_callback {feedlist args} {
 	set data [::http::data $token]
 
 	if {[info exists feed(charset)]} {
-		set data [encoding convertto [string tolower $feed(charset)] $data]
+		if {[string tolower $feed(charset)]) == "utf-8" && [is_utf8_patched]} {
+			#do nothing, already utf-8
+		} else {
+			set data [encoding convertto [string tolower $feed(charset)] $data]
+		}
 	}
 
 	if {([info exists meta(Content-Encoding)]) && \
@@ -895,6 +899,7 @@ proc ::rss-synd::cookie_replace {cookie data} {
 ##
 
 proc ::rss-synd::html_decode {eval data {loop 0}} {
+	if {![string match *&* $data]} {return $data}
 	array set chars {
 			 nbsp	\x20 amp	\x26 quot	\x22 lt		\x3C
 			 gt		\x3E iexcl	\xA1 cent	\xA2 pound	\xA3
@@ -954,6 +959,8 @@ proc ::rss-synd::html_decode {eval data {loop 0}} {
 
 	return $data
 }
+
+proc ::rss-synd::is_utf8_patched {} { catch {queuesize a} err1; catch {queuesize \u0754} err2; expr {[string bytelength $err2]!=[string bytelength $err1]} }
 
 proc ::rss-synd::check_channel {chanlist chan} {
 	foreach match [split $chanlist] {
