@@ -1,3 +1,4 @@
+# -*- tab-width: 4; indent-tabs-mode: t; -*-
 # rss-synd.tcl -- 0.5.1
 #
 #   Highly configurable asynchronous RSS & Atom feed reader for Eggdrops 
