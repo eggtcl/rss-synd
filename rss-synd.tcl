@@ -323,7 +323,7 @@ proc ::rss-synd::feed_callback {feedlist args} {
 	}
 
 	if {[info exists feed(charset)]} {
-		if {[string tolower $feed(charset)]) == "utf-8" && [is_utf8_patched]} {
+		if {[string tolower $feed(charset)] == "utf-8" && [is_utf8_patched]} {
 			#do nothing, already utf-8
 		} else {
 			set data [encoding convertto [string tolower $feed(charset)] $data]
