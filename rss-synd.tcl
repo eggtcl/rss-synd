@@ -1,3 +1,4 @@
+# -*- tab-width: 4; indent-tabs-mode: t; -*-
 # rss-synd.tcl -- 0.5.1
 #
 #   Highly configurable asynchronous RSS & Atom feed reader for Eggdrops 
@@ -830,13 +831,14 @@ proc ::rss-synd::cookie_parse {data current} {
 
 	set eval 0
 	if {([info exists feed(evaluate-tcl)]) && ($feed(evaluate-tcl) == 1)} { set eval 1 }
+	set variable_index 0
 
 	set matches [regexp -inline -nocase -all -- {@@(.*?)@@} $output]
 	foreach {match tmpc} $matches {
 		set tmpc [split $tmpc "!"]
 		set index 0
-
 		set cookie [list]
+		incr variable_index
 		foreach piece $tmpc {
 			set tmpp [regexp -nocase -inline -all -- {^(.*?)\((.*?)\)|(.*?)$} $piece]
 
@@ -858,7 +860,16 @@ proc ::rss-synd::cookie_parse {data current} {
 			set tmp [[namespace current]::xml_list_flatten $tmp]
 
 			regsub -all -- {([\"\$\[\]\{\}\(\)\\])} $match {\\\1} match
-			regsub -- $match $output "[string map { "&" "\\\x26" } [[namespace current]::html_decode $eval $tmp]]" output
+			set feed_data "[string map { "&" "\\\x26" } [[namespace current]::html_decode $eval $tmp]]"
+			if {$eval == 1} {
+				# We are going to eval this string so we can't insert untrusted
+				# text. Instead create variables and insert references to those
+				# variables that will be expanded in the subst call below.
+				set cookie_val($variable_index) $feed_data
+				regsub -- $match $output "\$cookie_val($variable_index)" output
+			} else {
+				regsub -- $match $output $feed_data output
+			}
 		}
 	}
 
